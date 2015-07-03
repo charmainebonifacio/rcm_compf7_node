@@ -26,27 +26,19 @@ Function RCM_COMPF7_MAIN()
     Dim ProcessingTime As Long
     Dim MessageSummary As String, SummaryTitle As String
     
-    Dim UserSelectedFolder As String, DBFDIR As String
-    Dim MAINFolder As String, compareIndex As Integer
-    Dim PROGDIR As String, ABREFDIR As String
-    Dim outDIR As String, OUTFDIR As String
-    Dim ZSDIR As String, HADIR As String
-    Dim BATDIR As String, CFDIR As String
-    Dim TMPDIR As String, AB10KDIR As String
+    Dim UserSelectedFolder As String
+    Dim MAINFolder As String
+    Dim CFDIR As String
     Dim CopiedFiles As Long
-    
-    Dim MainOUT As String, ZSOUT As String, HAOUT As String
-    Dim AB10KOUT As String, CFOUT As String, TMPOUT As String
-    Dim BATOUT As String, ABREFIN As String
-    Dim CheckABFolder As Boolean, CheckOUTFolder As Boolean
-    Dim CheckZSFolder As Boolean, CheckHAFolder As Boolean
+    Dim MainOUT As String
+    Dim CFOUT As String
     Dim ResultCF As Boolean
     Dim subARRAY() As String, outARRAY() As String
     Dim refIDArray() As String
     Dim refIndex As Integer
     
     ' Initialize Variables
-    SummaryTitle = "Zonal Statistics Macro Diagnostic Summary"
+    SummaryTitle = "Diagnostic Summary"
 
     ' Disable all the pop-up menus
     Application.ScreenUpdating = False
