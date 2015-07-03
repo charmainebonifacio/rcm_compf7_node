@@ -3,7 +3,7 @@ Attribute VB_Name = "Step_2_CompositeFile"
 ' Date Created : May 15, 2014
 ' Created By   : Charmaine Bonifacio
 '---------------------------------------------------------------------
-' Date Edited  : October 29, 2014
+' Date Edited  : July 3, 2015
 ' Edited By    : Charmaine Bonifacio
 ' Comments By  : Charmaine Bonifacio
 '---------------------------------------------------------------------
@@ -50,7 +50,7 @@ ByVal strOutPath As String) As Boolean
     Application.ScreenUpdating = False
     
     '-------------------------------------------------------------
-    ' Loop through all the .txt files within the folder
+    ' I. Loop through all the files within the folder
     '-------------------------------------------------------------
     Set objFSO = CreateObject("Scripting.FileSystemObject")
     Set objFolder = objFSO.GetFolder(strPath)
@@ -64,6 +64,9 @@ ByVal strOutPath As String) As Boolean
         logtxt = objFILE
         logfile.WriteLine logtxt
         
+		'-------------------------------------------------------------
+        ' II. Only process .CSV files
+        '-------------------------------------------------------------
         If UCase(Right(objFILE.Path, (Len(objFILE.Path) - InStrRev(objFILE.Path, ".")))) = UCase("csv") Then
 		    FileCount = FileCount + 1
             Set wbOrig = Workbooks.Open(objFILE.Path)
@@ -93,7 +96,10 @@ ByVal strOutPath As String) As Boolean
             ReDim SunHours(0 To NewLastRow)
             ReDim WindSpd(0 To NewLastRow)
             ReDim OutputText(0 To NewLastRow)
-                  
+            
+            '-------------------------------------------------------------
+            ' III. ACRU input file setup!
+            '-------------------------------------------------------------			
             For i = LBound(DateData) To UBound(DateData)
                 DateData(i) = Format(Range("A1").Offset(i, 0).Value, "00000000")
                 Precip(i) = Format(Range("B1").Offset(i, 0).Value, "00.0")
@@ -134,7 +140,10 @@ ByVal strOutPath As String) As Boolean
                 End If
                 stream.Write OutputText(i)
             Next i
-            ' Save as a txt file!
+			
+			'-------------------------------------------------------------
+            ' IV. Save as .txt file -- ACRU Grid File!
+			'-------------------------------------------------------------
             Call SaveTXT(wbOrig, OrigSheet, strOutPath, GridFile)
             logtxt = "Saving new grid file: " & TxtFile
             logfile.WriteLine logtxt
@@ -142,7 +151,10 @@ ByVal strOutPath As String) As Boolean
             stream.Close
         End If
     Next
-    ' Check how many files were processed.
+	
+	'-------------------------------------------------------------
+    ' V. Always check how many files were processed.
+	'-------------------------------------------------------------
     Debug.Print FileCount
     logtxt = "This macro processed # of files: " & FileCount
     logfile.WriteLine logtxt
@@ -157,38 +169,3 @@ Cancel:
     Set objFolder = Nothing
     Set stream = Nothing
 End Function
-'---------------------------------------------------------------------
-' Date Created : June 26, 2013
-' Created By   : Charmaine Bonifacio
-'---------------------------------------------------------------------
-' Date Edited  : June 26, 2013
-' Edited By    : Charmaine Bonifacio
-' Comments By  : Charmaine Bonifacio
-'---------------------------------------------------------------------
-' Organization : Department of Geography, University of Lethbridge
-' Title        : reDefineName
-' Description  : This function changes the string and includes a
-'                leading zeroes.
-' Parameters   : String
-' Returns      : String
-'---------------------------------------------------------------------
-Function reDefineName(fName As String) As String
-
-    Dim Temp As String
-    Dim fLen As Integer
-    fLen = Len(fName)
-    Select Case fLen
-        Case 1
-            Temp = "000" & fName
-            
-        Case 2
-            Temp = "00" & fName
-            
-        Case 3
-            Temp = "0" & fName
-    End Select
-    
-    reDefineName = Temp
-    
-End Function
-
